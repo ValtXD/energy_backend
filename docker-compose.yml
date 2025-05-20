@@ -3,9 +3,12 @@ services:
     image: postgres:14-alpine
     restart: always
     environment:
-      POSTGRES_DB: energy_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1303
+      DB_ENGINE: django.db.backends.postgresql_psycopg2
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_NAME: db_energy
+      DB_USER: postgres
+      DB_PASSWORD: 1303
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
