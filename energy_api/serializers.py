@@ -1,6 +1,26 @@
 from rest_framework import serializers
-from .models import Ambiente, Estado, Bandeira, Aparelho
 from django.utils import timezone
+from .models import Aparelho, Ambiente, Estado, Bandeira
+
+class AparelhoCreateSerializer(serializers.ModelSerializer):
+    ambiente = serializers.PrimaryKeyRelatedField(queryset=Ambiente.objects.all())
+    estado = serializers.PrimaryKeyRelatedField(queryset=Estado.objects.all())
+    bandeira = serializers.PrimaryKeyRelatedField(queryset=Bandeira.objects.all())
+
+    class Meta:
+        model = Aparelho
+        fields = '__all__'
+        extra_kwargs = {
+            'data_cadastro': {'required': False}
+        }
+
+    def create(self, validated_data):
+        validated_data['data_cadastro'] = validated_data.get('data_cadastro') or timezone.now().date()
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        return super().update(instance, validated_data)
+
 
 class AmbienteSerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,16 +57,3 @@ class AparelhoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Aparelho
         fields = '__all__'
-
-
-class AparelhoCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Aparelho
-        fields = '__all__'
-        extra_kwargs = {
-            'data_cadastro': {'required': False}
-        }
-
-    def create(self, validated_data):
-        validated_data['data_cadastro'] = validated_data.get('data_cadastro') or timezone.now().date()
-        return super().create(validated_data)

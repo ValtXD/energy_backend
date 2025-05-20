@@ -1,6 +1,10 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from datetime import datetime
+
+from .filters import AparelhoFilter
 from .models import Ambiente, Estado, Bandeira, Aparelho
 from .serializers import (
     AmbienteSerializer,
@@ -9,8 +13,6 @@ from .serializers import (
     AparelhoSerializer,
     AparelhoCreateSerializer
 )
-from django.utils import timezone
-from datetime import datetime
 
 
 class AmbienteViewSet(viewsets.ModelViewSet):
@@ -29,10 +31,13 @@ class BandeiraViewSet(viewsets.ModelViewSet):
 
 
 class AparelhoViewSet(viewsets.ModelViewSet):
-    queryset = Aparelho.objects.all().order_by('-data_cadastro')
+    queryset = Aparelho.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['nome', 'ambiente', 'estado', 'bandeira']
+    filterset_class = AparelhoFilter
 
     def get_serializer_class(self):
-        if self.action == 'create':
+        if self.action in ['create', 'update', 'partial_update']:
             return AparelhoCreateSerializer
         return AparelhoSerializer
 
@@ -56,7 +61,11 @@ class AparelhoViewSet(viewsets.ModelViewSet):
         ambiente = aparelho.ambiente
         aparelho.delete()
 
-        # Atualiza histórico (implemente esta função conforme sua lógica)
+        # Atualize histórico conforme sua lógica
         self.atualizar_historico(ambiente, data_cadastro)
 
         return Response({"status": "Aparelho removido com sucesso"})
+
+    def atualizar_historico(self, ambiente, data_cadastro):
+        # Implementar sua lógica de atualização do histórico aqui
+        pass

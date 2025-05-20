@@ -14,6 +14,8 @@ import os
 
 from pathlib import Path
 import os
+
+import django_filters
 from dotenv import load_dotenv
 
 # Carrega o arquivo .env da raiz do projeto
@@ -31,7 +33,7 @@ SECRET_KEY = 'django-insecure-=*(01@%b-a@*rwx)%ztvne720=u(&ci=u-_i*ugi#zi*l22ui!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['15.229.71.72']
+ALLOWED_HOSTS = ['localhost', '15.229.71.72', '0.0.0.0']
 
 
 # Application definition
@@ -46,6 +48,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'energy_api.apps.EnergyApiConfig',
+    'django_filters',
     'corsheaders',
     'core',
 ]
@@ -59,6 +62,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 
 ]
 
@@ -141,6 +145,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+DEFAULT_FILTER_BACKENDS: 'django_filters.rest_framework.DjangoFilterBackend'
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:4200',  # Angular
