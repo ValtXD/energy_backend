@@ -1,5 +1,6 @@
+import django_filters
 from django_filters import rest_framework as filters
-from .models import Aparelho
+from .models import Aparelho, UserProfile
 
 
 class AparelhoFilter(filters.FilterSet):
@@ -24,3 +25,14 @@ class AparelhoFilter(filters.FilterSet):
     class Meta:
         model = Aparelho
         fields = []
+
+
+
+class UserProfileFilter(django_filters.FilterSet):
+    cpf = django_filters.CharFilter(field_name='cpf', lookup_expr='icontains')
+    telefone = django_filters.CharFilter(field_name='telefone', lookup_expr='icontains')
+    genero = django_filters.CharFilter(field_name='genero', lookup_expr='icontains')
+
+    class Meta:
+        model = UserProfile
+        fields = ['cpf', 'telefone', 'genero']

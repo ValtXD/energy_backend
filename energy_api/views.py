@@ -1,17 +1,17 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from datetime import datetime
 
-from .filters import AparelhoFilter
-from .models import Ambiente, Estado, Bandeira, Aparelho
+from .filters import AparelhoFilter, UserProfileFilter
+from .models import Ambiente, Estado, Bandeira, Aparelho, UserProfile
 from .serializers import (
     AmbienteSerializer,
     EstadoSerializer,
     BandeiraSerializer,
     AparelhoSerializer,
-    AparelhoCreateSerializer
+    AparelhoCreateSerializer, UserProfileSerializer
 )
 
 
@@ -69,3 +69,11 @@ class AparelhoViewSet(viewsets.ModelViewSet):
     def atualizar_historico(self, ambiente, data_cadastro):
         # Implementar sua lógica de atualização do histórico aqui
         pass
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+
+
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = UserProfileFilter

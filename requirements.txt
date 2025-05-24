@@ -8,7 +8,7 @@ tzdata==2025.2
 python-dotenv~=1.1.0
 djangorestframework-simplejwt
 
-django-filter~=25.1
+django-filter==24.3
 pip~=25.1.1
 google~=3.0.0
 protobuf~=5.29.4
